@@ -1,0 +1,104 @@
+@import "variable";
+
+html, body, div, span, iframe, h1, h2, h3, h4, h5, h6,
+p, a, abbr, address, code, map, area, del, em, img, strong,
+sub, sup, tt, b, i, ol, ul, li, fieldset, form, label, legend,
+table, caption, thead, tbody, tfoot, tr, th, td, article, aside,
+canvas, embed, figure, figcaption, footer, header, nav, output,
+section, time, mark, audio, video, input, textarea, select, button {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+  &:after, &:before {
+    box-sizing: border-box;
+  }
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, Arial, "Microsoft Yahei", "Hiragino Sans GB", "Heiti SC", "WenQuanYi Micro Hei", sans-serif
+}
+
+/*input, textarea, select, button {
+  display: inline-block;
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  border: 1px solid #f5f5f5;
+  outline: none;
+  color: inherit;
+}
+label {
+  display: inline-block;
+}
+button {
+  cursor: pointer;
+  border:none;
+}*/
+ul, ol {
+  list-style: none;
+}
+
+a, a:hover, a:focus {
+  text-decoration: none;
+  outline: none;
+  color: inherit;
+}
+
+img {
+  border: none;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+em, i, cite {
+  font-style: normal;
+}
+
+.fl {
+  float: left;
+}
+
+.fr {
+  float: right;
+}
+
+.cf {
+  *zoom: 1;
+}
+
+.cf:before, .cf:after {
+  content: '';
+  display: table;
+  clear: both;
+  visibility: hidden;
+}
+
+.middle:before {
+  content: '';
+  display: inline-block;
+  vertical-align: middle;
+  height: 100%;
+  width: 0;
+}
+
+//谷歌滚动条
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-corner, ::-webkit-scrollbar-track {
+  background-color: #e2e2e2;
+}
+
+::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, .3);
+}
+
+.textOverflow {
+  .text-overflow()
+}

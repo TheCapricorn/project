@@ -1,0 +1,36 @@
+.aside-box {
+  position: relative;
+  //padding-top: 64px;
+  height: 100%;
+  //overflow: hidden;
+  .ant-layout-sider-children {
+    overflow-y: auto;
+  }
+  .menu-box {
+    li {
+      user-select: none;
+      .ant-menu-item-group-title {
+        font-size: 13px;
+        opacity: .5;
+      }
+    }
+  }
+  .aside-btn {
+    position: absolute;
+    right: -50px;
+    top: 0;
+    width: 50px;
+    height: 64px;
+    line-height: 64px;
+    font-size: 18px;
+    z-index: 10;
+    color: #333;
+    text-align: center;
+    a {
+      color: #333;
+    }
+  }
+  .logo {
+    height: 64px;
+  }
+}

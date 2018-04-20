@@ -1,0 +1,96 @@
+//基本颜色以及各种变量
+@red: #ff3000;
+@orange: #ff8a00;
+@yellow: #f5ff9b;
+@green: #6aaf08;
+@cyan: #eaedf1;
+@blue: #1890FF;
+@purple: #721e81;
+
+@green-light: #00b350;
+@green-deep: #004c02;
+@deepBlue: #3969bf;
+@lightBlue: #30404f;
+
+@primary: #3287ff; //基本颜色
+@primary-hover: #2e60b7; //基本颜色悬停
+@success: #00a158; //成功类型颜色
+@success-hover: #34d089; //成功类型颜色悬停
+@info: #5bc0de; //信息类型颜色
+@info-hover: #0ab0de; //信息类型颜色悬停
+@warning: @orange; //暖色
+@warning-hover: #f44c26; //暖色悬停
+@danger: #d9534f; //危险警告颜色
+@danger-hover: #d91930; //危险警告颜色悬停
+
+@text-color: #777777;
+@text-color-black: #333;
+@border-color: #d2d2d2;
+
+@gray-darker: #222;
+@gray-dark: #333;
+@gray: #555;
+@gray-light: #777;
+@gray-lighter: #d9d9d9;
+
+@border: 1px solid #f2f2f2;
+@index-border: 1px solid #e6e6e6;
+@in-shadow: inset 0 3px 5px rgba(0, 0, 0, .2);
+@out-shadow: 0 0 20px 4px rgba(0, 0, 0, .3);
+
+//基本样式
+.line-height(@height:24px) {
+  height: @height;
+  line-height: @height;
+}
+
+.vertical-height(@height:14px) {
+  height: @height;
+  line-height: @height*2;
+}
+
+.vertical() {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.text-overflow(@width:200px) {
+  width: @width;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+//鼠标悬停弹出样式
+.scaleY(@height:200px) {
+  transform: scaleY(0);
+  opacity: 0;
+  height: @height;
+  height: 0 \9;
+  transition: .2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  transform-origin: top;
+}
+
+.scaleY-hover(@height:200px) {
+  opacity: 1;
+  transform: scaleY(1);
+  height: @height;
+}
+
+.opacity(@alpha:1) {
+  @var: @alpha*100;
+  filter: alpha(opacity=@var);
+  opacity: @alpha;
+}
+
+.rgba {
+  filter: progid:DXImageTransform.Microsoft.Gradient(startColorstr=#d9ffffff, endColorstr=#d9ffffff);
+  background-color: rgba(255, 255, 255, .85);
+}
+
+.v-block {
+  content: '';
+  display: block;
+  position: absolute;
+}
+
