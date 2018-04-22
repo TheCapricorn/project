@@ -183,7 +183,7 @@ class UserAdd extends Component {
               {getFieldDecorator('mobile', {
                 rules: [
                   {required: true, message: '必选项！'},
-                  {
+                  /*{
                     validator(rule, value, callback) {
                       let errors = [];
                       if (!reg.mobile.test(value)) {
@@ -191,7 +191,7 @@ class UserAdd extends Component {
                       }
                       callback(errors);
                     }
-                  }]
+                  }*/{pattern:reg.mobile,message: '手机格式不正确！'}]
               })(
                 <Input placeholder="请输入"/>
               )}

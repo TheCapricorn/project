@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Form, Divider, Table, Modal, Badge, Alert, Icon} from 'antd'
+import {Button, Form, Divider, Table, Modal, Badge, Alert, Icon,Radio, Input,} from 'antd'
 import {post} from '@/ajax/ajax'
 import api from '@/ajax/api'
 import moment from 'moment'
@@ -9,20 +9,20 @@ import Bread from '@/components/common/bread'
 import AddAuth from './authset'
 import Addbtn from './roleadd'
 
+
 class RoleList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      addVisible: false,
+      modify:false,
+      urid:'',
       addAuthVisible: false,
       addAuthData:'',
-      addData: {
-        visible: false,
-        type: 'add',
-        urid: ''
-      },
       tableData: [],
       selectedRows: [],
-      loading: false,
+      tableLoading: false,
+      btnLoading:false,
       expand: false,
       orderByClause: '',
       tablePage: {
@@ -101,7 +101,7 @@ class RoleList extends Component {
               disabled={parseInt(record.state, 10) === 1}>
               <Icon type='delete'/>
             </a>
-            <a onClick={this.addShow.bind(this, 'modify', record.urid)}>
+            <a onClick={this.addShow.bind(this, record.urid)}>
               <Icon type='edit'/>
             </a>
           </div>
@@ -127,14 +127,13 @@ class RoleList extends Component {
   componentDidMount() {
     this.loadTable();
   }
-
   componentWillReceiveProps(nextProps) {
-    // console.log('调用了');
+    // console.log(nextProps);
   }
 
   loadTable = (data) => {
     this.setState({
-      loading: true
+      tableLoading: true
     }, () => {
       post({
         url: api.role.list,
@@ -154,12 +153,12 @@ class RoleList extends Component {
               ...this.state.tablePage,
               total: res.data.total
             },
-            loading: false
+            tableLoading: false
           })
         }
       }).catch(() => {
         this.setState({
-          loading: false
+          tableLoading: false
         })
       });
     });
@@ -231,26 +230,88 @@ class RoleList extends Component {
       expand: !this.state.expand
     });
   };
-  addShow = (type, urid) => {
-    // console.log(e.target);
-    this.setState({
-      addData: {
-        visible: true,
-        type,
-        urid
-      }
-    })
+
+  // 新建表单显示，并做是否修改判断
+  addShow = (urid) => {
+    if(urid){
+      post({
+        url: api.role.list,
+        data:{entity:{urid}}
+      }).then(res=>{
+        if(res&&res.code===200){
+          let data=res.data.list[0];
+          this.addForm.props.form.setFieldsValue({
+            urName:data.urName,
+            urCode:data.urCode,
+            remarks:data.remarks,
+            state:data.state,
+          })
+        }
+      });
+      this.setState({
+        modify:true,
+        addVisible: true,
+        urid,
+      })
+    }else {
+      this.setState({
+        modify:false,
+        addVisible: true
+      })
+    }
+
   };
+  // 新建表单模态框关闭
   addCancel = () => {
     this.setState({
-      addData: {
-        urid:'',
-        type:'add',
-        visible: false
+      addVisible:false
+    });
+    this.addForm.props.form.resetFields();
+  };
+  // 新建表单提交
+  addSubmit = (e) => {
+    e.preventDefault();
+    let url = '';
+    this.addForm.props.form.validateFields((err, values) => {
+      if (this.state.modify) {
+        url = api.role.update;
+        values.urid = this.state.urid
+      } else {
+        url = api.role.add;
+      }
+      if (!err) {
+        this.setState({
+          btnLoading: true
+        }, () => {
+          post({url, data: values}).then(res => {
+            // console.log(res);
+            if (res.code === 200) {
+              this.addCancel();
+              this.setState({
+                btnLoading: false,
+              },()=>{
+                this.loadTable();
+                Modal.confirm({
+                  title: '操作成功',
+                  content: '角色' + (this.state.modify ? '修改' : '添加') + '成功，是否继续添加权限？',
+                  okText: '添加权限',
+                  onOk: () => {
+                    this.addAuthShow(values.urid)
+                  }
+                });
+              });
+            }
+          }).catch(() => {
+            this.setState({
+              btnLoading: false
+            });
+          });
+        });
+
       }
     })
   };
-  addAuth=(id)=>{
+  addAuthShow=(id)=>{
     // console.log(id);
     this.setState({
       addAuthVisible:true,
@@ -266,11 +327,30 @@ class RoleList extends Component {
     return (
       <div className={'main-box'}>
         <AddAuth addAuthData={this.state.addAuthData} addAuthVisible={this.state.addAuthVisible} addAuthCancel={this.addAuthCancel}/>
+        {
+          this.state.modify?
+            <Addbtn
+              wrappedComponentRef={ins=>this.addForm=ins}
+              title='修改'
+              btnLoading={this.state.btnLoading}
+              addVisible={this.state.addVisible}
+              addSubmit={this.addSubmit}
+              addCancel={this.addCancel}/>:
+            <Addbtn
+              wrappedComponentRef={ins=>this.addForm=ins}
+              title='新建'
+              btnLoading={this.state.btnLoading}
+              addVisible={this.state.addVisible}
+              addSubmit={this.addSubmit}
+              addCancel={this.addCancel}/>
+        }
+
         <Button onClick={this.addAuth}>选线</Button>
         <div className='bread-group'>
           <Bread bread={['用户中心', '角色管理', '角色列表']}/>
         </div>
         <Divider/>
+
         <div className='main-content'>
           <div className={'search-group'}>
             {
@@ -287,8 +367,7 @@ class RoleList extends Component {
             }
           </div>
           <div className={'btn-group'}>
-            <Addbtn addData={this.state.addData} loadTable={this.loadTable} addCancel={this.addCancel} addAuth={this.addAuth}/>
-            <Button icon='plus' type="primary" onClick={this.addShow.bind(this, 'add', '')}>新建</Button>
+            <Button icon='plus' type="primary" onClick={this.addShow.bind(this,'')}>新建</Button>
             <Button onClick={this.delAllData} disabled={this.state.selectedRows.length === 0}>批量删除</Button>
           </div>
           <div className='info-group'>

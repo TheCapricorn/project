@@ -84,10 +84,6 @@ class SiderCustom extends Component {
       firstHide: !this.state.firstHide
     })
   };
-  handleClick = () => {
-
-  };
-
   render() {
     return (
       <Sider

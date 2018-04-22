@@ -71,6 +71,9 @@ class AuthSet extends Component {
       url:'/uua/app/center/list',
     }).then(res=>{
       // console.log(res);
+      if(!res){
+        return false;
+      }
       let tabPane=[];
       res.data.map((item,i)=>{
         post({
