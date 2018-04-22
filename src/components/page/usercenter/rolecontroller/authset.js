@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
-import {Button, Form, Table, Modal, Icon, Select, Input,Tabs} from 'antd'
+import {Button, Form, /*Table,*/ Modal, Icon, Select, Input,Tabs} from 'antd'
 import {post} from '@/ajax/ajax'
-import api from '@/ajax/api'
+// import api from '@/ajax/api'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -76,27 +76,26 @@ class AuthSet extends Component {
       }
       let tabPane=[];
       res.data.map((item,i)=>{
-        post({
-          url:'/uua/app/center/modular/cmmbTree',
-          data:{uacid:item.uacid}
-        }).then(res=>{
-          console.log(res);
-          return tabPane.push(
-            <TabPane tab={item.uappName} key={i}>
-              <div className='auth-remark'>{item.uappRemarks}</div>
-              <div className='auth-tree'>
-                {
-                  res.data.map((item)=>{
 
-                  })
-                }
-              </div>
-            </TabPane>
-          )
-        });
+        return tabPane.push(
+          <TabPane tab={item.uappName} key={i}>
+            <div className='auth-remark'>{item.uappRemarks}</div>
+            <div className='auth-tree'>
+              {
 
+              }
+            </div>
+          </TabPane>
+        )
       });
     });
+    /*post({
+      url:'/uua/app/center/modular/cmmbTree',
+      data:{uacid:item.uacid}
+    }).then(res=>{
+      console.log(res);
+
+    });*/
   }
 
   componentWillReceiveProps(nextProps) {

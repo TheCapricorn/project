@@ -208,7 +208,7 @@ class LinkMenu extends Component {
               }
             </FormItem>
             <FormItem className={'delBtn'} >
-              <Button onClick={this.delData} shape="circle" icon="search" icon="minus-circle-o"/>
+              <Button onClick={this.delData} shape="circle" icon="minus-circle-o"/>
 
             </FormItem>
           </Form>
@@ -217,7 +217,7 @@ class LinkMenu extends Component {
       );
 
 
-  }
+  };
 
   render() {
     const { visible, confirmLoading } = this.state;
@@ -243,7 +243,7 @@ class LinkMenu extends Component {
     const formItemLayout = {
       labelCol:{span : 6},
       wrapperCol:{span:14}
-    }
+    };
     const { getFieldDecorator } = this.props.form;
 
     return (
@@ -289,7 +289,7 @@ class LinkMenu extends Component {
               }
             </FormItem>
             <FormItem className={'delBtn'} >
-              <Button onClick={this.delData} shape="circle" icon="search" icon="minus-circle-o"/>
+              <Button onClick={this.delData} shape="circle"  icon="minus-circle-o"/>
 
             </FormItem>
           </Form>

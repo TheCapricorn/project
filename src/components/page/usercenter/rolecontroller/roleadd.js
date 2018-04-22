@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 import {Button, Form, Radio, Input, Modal,} from 'antd'
-import {post} from '@/ajax/ajax'
-import api from '@/ajax/api'
 
 
 const FormItem = Form.Item;

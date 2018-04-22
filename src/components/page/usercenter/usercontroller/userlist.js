@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 // import {Link} from 'react-router-dom'
-import {Button, Form, Divider, Table, Modal, Badge, Alert, Icon} from 'antd'
+import {/*Button, */Form, Divider, Table, Modal, Badge, Alert, Icon} from 'antd'
 import {post} from '@/ajax/ajax'
 import api from '@/ajax/api'
 import SimpleForm from './simpleform'
