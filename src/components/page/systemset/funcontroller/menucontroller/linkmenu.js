@@ -1,12 +1,11 @@
 import React, {Component} from 'react';
-import { Modal, Button, Form, Input, message} from 'antd';
+import { Modal, Button, Form, Input, message, Icon} from 'antd';
 import {post} from "@/ajax/ajax";
 import api from "@/ajax/api";
 import './menustyle.less'
 
 const FormItem = Form.Item;
-// const Option = Select.Option;
-// const data =[];
+let uuid = 0;
 
 class LinkMenu extends Component {
 
@@ -16,20 +15,21 @@ class LinkMenu extends Component {
       visible:false,
       loading:false,
       tableData: [],
+      confirmLoading: false,
       // dataSource:[],
       selectedRows: [],
       btnType:this.props.type==='modify',
       formData:this.props.type==='modify'?this.props.data:{}
     };
-    this.columns = [{
-      title:'按钮名',
-      dataIndex: 'blName',
-      key:'blName',
-    }, {
-      title:'按钮方法',
-      dataIndex: 'blName',
-      key:'blName',
-    }];
+    // this.columns = [{
+    //   title:'按钮名',
+    //   dataIndex: 'blName',
+    //   key:'blName',
+    // }, {
+    //   title:'按钮方法',
+    //   dataIndex: 'blName',
+    //   key:'blName',
+    // }];
   }
 
   componentDidMount() {
@@ -38,18 +38,75 @@ class LinkMenu extends Component {
   }
 
 
-  handleSub=(e)=>{
+  remove = (k) => {
+    const { form } = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    // We need at least one passenger
+    if (keys.length === 1) {
+      return;
+    }
+
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k),
+    });
+  }
+
+  delData = (arr) => {
+    Modal.confirm({
+      title: '重要提醒',
+      content: (
+        <p>
+          <span style={{color: '#ff0000'}}>按钮删除后不可恢复</span>，你还要继续吗？
+        </p>
+      ),
+      okText: '确认',
+      cancelText: '取消',
+      onOk: () => {
+        post({
+          url:api.buttoncontroller.delete,
+          data:{uuaButtons:arr}
+        }).then(res => {
+          // console.log(res);
+          if (res.code === 200) {
+            this.loadTable();
+          }
+        });
+      }
+    });
+  };
+
+
+  add = () => {
+    const { form } = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    const nextKeys = keys.concat(uuid);
+    uuid++;
+    // can use data-binding to set
+    // important! notify form to detect changes
+    form.setFieldsValue({
+      keys: nextKeys,
+    });
+  }
+
+
+
+
+
+  handleSubmit=(e)=>{
     e.preventDefault();
     let url='';
     this.props.form.validateFields((err,values)=>{
-        url=api.buttoncontroller.list;
-        values.umid=this.state.formData.umid;
+      url=api.buttoncontroller.list;
+      values.umid=this.state.formData.umid;
 
       let Arrdata = this.state.formData;
       let arrData = Array.from(Arrdata);
-        arrData.push({});
+      arrData.push({});
 
-       console.log(values);
+      console.log(values);
       if(!err){
         this.setState({
           loading:true
@@ -77,7 +134,8 @@ class LinkMenu extends Component {
                 this.setState({
                   loading:false
                 });
-            }
+            };
+            console.log(res.code);
           }).catch(()=>{
             this.setState({
               loading:false
@@ -89,36 +147,14 @@ class LinkMenu extends Component {
     })
   };
 
-  delData = (arr) => {
-    Modal.confirm({
-      title: '重要提醒',
-      content: (
-        <p>
-          <span style={{color: '#ff0000'}}>按钮删除后不可恢复</span>，你还要继续吗？
-        </p>
-      ),
-      okText: '确认',
-      cancelText: '取消',
-      onOk: () => {
-        post({
-          url:api.buttoncontroller.delete,
-          data:{uuaButtons:arr}
-        }).then(res => {
-           console.log(res);
-          if (res.code === 200) {
-            this.loadTable();
-          }
-        });
-      }
-    });
-  };
 
-
-  state = {
-    // ModalText: 'Content of the modal',
-    visible: false,
-    confirmLoading: false,
-  }
+handleAdd = () =>{
+  Form.create({
+    content: (
+      <input type="text"/>
+    ),
+  })
+}
   showModal = () => {
     this.setState({
       visible: true,
@@ -126,15 +162,10 @@ class LinkMenu extends Component {
   }
   handleOk = () => {
     this.setState({
-       ModalText: '',
+      ModalText: '',
       confirmLoading: true,
     });
-    setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false,
-      });
-    }, 2000);
+
   }
   handleCancel = () => {
     // console.log('Clicked cancel button');
@@ -142,59 +173,62 @@ class LinkMenu extends Component {
       visible: false,
     });
   }
-  handleSubmit = (e) => {
-    e.preventDefault();
-    this.props.form.validateFields((err, values) => {
-      if (!err) {
-        console.log('Received values of form: ', values);
-      }
-    });
-  }
 
-  handleAdd = () =>{
-      // const { visible, confirmLoading } = this.state;
-      // const rowSelection = {
-      //   onChange: (selectedRowKeys, selectedRows) => {
-      //     // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-      //   },
-      //   onSelect: (record, selected, selectedRows) => {
-      //     // console.log(record, selected, selectedRows);
-      //     this.setState({
-      //       selectedRows
-      //     })
-      //   },
-      //   onSelectAll: (selected, selectedRows) => {
-      //     // console.log(selected, selectedRows);
-      //     this.setState({
-      //       selectedRows
-      //     })
-      //   },
-      // };
-      const formItemLayout = {
-        labelCol:{span : 6},
-        wrapperCol:{span:14}
-      }
-      const { getFieldDecorator} = this.props.form;
-      return(
-        Modal.innerHTML(
-          <Form>
-            <FormItem {...formItemLayout} className={'btnName'}>
-              {
-                getFieldDecorator('blName', {
-                  initialValue:this.state.formData.blName,
-                  rules:[{
-                    required:true,message:'请输入按钮名！'
-                  }]
-                })(
 
-                  <Input type="text" placeholder="按钮名"/>
+  render() {
 
-                )
-              }
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const formItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 4 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 20 },
+      },
+    };
+    const formItemLayoutWithOutLabel = {
+      wrapperCol: {
+        xs: { span: 24, offset: 0 },
+        sm: { span: 20, offset: 4 },
+      },
+    };
+    getFieldDecorator('keys', { initialValue: [] });
+    const keys = getFieldValue('keys');
+    const formItems = keys.map((k, index) => {
+      return (
+        <FormItem
+          {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+          label={index === 0 ? '按钮' : ''}
+          required={false}
+          key={k}
+        >
+          {getFieldDecorator(`names[${k}]`, {
+            validateTrigger: ['onChange', 'onBlur'],
+            rules: [{
 
-            </FormItem>
-            {/*<span className={'Sty'}>----</span>*/}
-            <FormItem {...formItemLayout} className={'btnMethods'}>
+              whitespace: true,
+
+            }],
+          })(
+            <span>
+              <FormItem {...formItemLayoutWithOutLabel} className={'btnName'}>
+                {
+                  getFieldDecorator('blName', {
+                    initialValue:this.state.formData.blName,
+                    rules:[{
+                      required:true,message:'请输入按钮名！'
+                    }]
+                  })(
+
+                    <input type="text" placeholder="按钮名称" style={{ width: '40%', height:'33px', borderRadius:'6px'}} />
+
+                  )
+                }
+
+              </FormItem>
+              <FormItem {...formItemLayoutWithOutLabel} className={'btnMethods'}>
               {
                 getFieldDecorator('blMethod', {
                   initialValue:this.state.formData.blMethod,
@@ -202,49 +236,33 @@ class LinkMenu extends Component {
                     required:true,message:'请输入按钮方法！'
                   }]
                 })(
-                  <Input type="text" placeholder="按钮方法"/>
 
+                  <Input placeholder="按钮方法" style={{ width: '60%'}} />
                 )
               }
             </FormItem>
-            <FormItem className={'delBtn'} >
-              <Button onClick={this.delData} shape="circle" icon="minus-circle-o"/>
 
-            </FormItem>
-          </Form>
-        )
 
+            </span>
+
+          )}
+          {keys.length > 1 ? (
+            <Icon
+              className="dynamic-delete-button"
+              type="minus-circle-o"
+              disabled={keys.length === 1}
+              onClick={() => this.remove(k)}
+            />
+          ) : null}
+        </FormItem>
       );
+    });
 
 
-  };
 
-  render() {
     const { visible, confirmLoading } = this.state;
 
 
-    // const rowSelection = {
-    //   onChange: (selectedRowKeys, selectedRows) => {
-    //     // console.log(`selectedRowKeys: ${selectedRowKeys}`, 'selectedRows: ', selectedRows);
-    //   },
-    //   onSelect: (record, selected, selectedRows) => {
-    //     // console.log(record, selected, selectedRows);
-    //     this.setState({
-    //       selectedRows
-    //     })
-    //   },
-    //   onSelectAll: (selected, selectedRows, changeRows) => {
-    //     // console.log(selected, selectedRows, changeRows);
-    //     this.setState({
-    //       selectedRows
-    //     })
-    //   },
-    // };
-    const formItemLayout = {
-      labelCol:{span : 6},
-      wrapperCol:{span:14}
-    };
-    const { getFieldDecorator } = this.props.form;
 
     return (
       <div className={'btn-modal'}>
@@ -254,108 +272,20 @@ class LinkMenu extends Component {
         <Modal title="选择按钮"
                width="45%"
                visible={visible}
-               onOk={this.handleSub}
+               onOk={this.handleSubmit}
                confirmLoading={confirmLoading}
                onCancel={this.handleCancel}
         >
-          <Form>
-            <FormItem {...formItemLayout} className={'btnName'}>
-              {
-                getFieldDecorator('blName', {
-                  initialValue:this.state.formData.blName,
-                  rules:[{
-                    required:true,message:'请输入按钮名！'
-                  }]
-                })(
+          <Form onSubmit={this.handleSubmit}>
+            {formItems}
 
-                  <Input type="text" placeholder="按钮名"/>
-
-                )
-              }
-
+            <FormItem {...formItemLayoutWithOutLabel}>
+              <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
+                <Icon type="plus" /> 添加
+              </Button>
             </FormItem>
-            {/*<span className={'Sty'}>----</span>*/}
-            <FormItem {...formItemLayout} className={'btnMethods'}>
-              {
-                getFieldDecorator('blMethod', {
-                  initialValue:this.state.formData.blMethod,
-                  rules:[{
-                    required:true,message:'请输入按钮方法！'
-                  }]
-                })(
-                    <Input type="text" placeholder="按钮方法"/>
 
-                )
-              }
-            </FormItem>
-            <FormItem className={'delBtn'} >
-              <Button onClick={this.delData} shape="circle"  icon="minus-circle-o"/>
-
-            </FormItem>
           </Form>
-         {/*<List*/}
-           {/*itemLayout="horizontal"*/}
-           {/*rowKey='ids'*/}
-           {/*// rowSelection={rowSelection}*/}
-           {/*// dataSourse={this.state.tableData}*/}
-           {/*// pagination={this.state.tablePage}*/}
-           {/*renderItem={item=>(*/}
-               {/*<div>*/}
-               {/*<FormItem {...formItemLayout} className={'btnName'}>*/}
-                 {/*{*/}
-                   {/*getFieldDecorator('blName', {*/}
-                     {/*initialValue:item.blName,*/}
-                     {/*rules:[{*/}
-                       {/*required:true,message:'请输入按钮名！'*/}
-                     {/*}]*/}
-                   {/*})(*/}
-
-                     {/*<Input type="text" placeholder="按钮名"/>*/}
-
-                   {/*)*/}
-                 {/*}*/}
-
-               {/*</FormItem>*/}
-               {/*/!*<span className={'Sty'}>----</span>*!/*/}
-               {/*<FormItem {...formItemLayout} className={'btnMethods'}>*/}
-                 {/*{*/}
-                   {/*getFieldDecorator('blMethod', {*/}
-                     {/*initialValue:item.blMethod,*/}
-                     {/*rules:[{*/}
-                       {/*required:true,message:'请输入按钮方法！'*/}
-                     {/*}]*/}
-                   {/*})(*/}
-                    {/*<div>*/}
-                      {/*<Input type="text" placeholder="按钮方法"/>*/}
-                      {/*<Button*/}
-                        {/*onClick={this.delData.bind(this, record)}*/}
-                        {/*disabled={parseInt(record.state, 10) ===1}*/}
-                        {/*shape="circle"*/}
-                        {/*icon="minus-circle-o"/>*/}
-                    {/*</div>*/}
-
-
-                   {/*)*/}
-                 {/*}*/}
-
-               {/*</FormItem>*/}
-
-
-             {/*</div>*/}
-
-         {/*)}*/}
-
-         {/*/>*/}
-          <FormItem>
-            <Button
-              onClick={this.handleAdd}
-              icon='plus'
-              callback={this.loadTable}
-
-            >
-              添加
-            </Button>
-          </FormItem>
 
 
         </Modal>
@@ -367,5 +297,5 @@ class LinkMenu extends Component {
     );
   }
 }
-LinkMenu = Form.create()(LinkMenu); //解决了getFieldDecorator无法定义;
+LinkMenu = Form.create()(LinkMenu);
 export default  LinkMenu;

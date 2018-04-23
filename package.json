@@ -19,7 +19,7 @@
   },
   "proxy": {
     "/api": {
-      "target": "http://127.0.0.1:8080",
+      "target": "http://192.167.5.155:8080",
       "changeOrigin": true,
       "pathRewrite": {
         "^/api": ""

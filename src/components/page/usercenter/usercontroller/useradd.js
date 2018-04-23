@@ -24,10 +24,6 @@ class UserAdd extends Component {
       loading: false,
       emailValue: [],
       formData: {},
-      treeData: [
-        {id:1, pId:0, value:'1', label:"test1"},
-        {id:2, pId:1, value:'12', label:"test2"}
-      ],
       fileList: [],
       previewImage: ''
     };
@@ -183,15 +179,7 @@ class UserAdd extends Component {
               {getFieldDecorator('mobile', {
                 rules: [
                   {required: true, message: '必选项！'},
-                  /*{
-                    validator(rule, value, callback) {
-                      let errors = [];
-                      if (!reg.mobile.test(value)) {
-                        errors.push(new Error('手机格式不正确'))
-                      }
-                      callback(errors);
-                    }
-                  }*/{pattern:reg.mobile,message: '手机格式不正确！'}]
+                  {pattern:reg.mobile,message: '手机格式不正确！'}]
               })(
                 <Input placeholder="请输入"/>
               )}

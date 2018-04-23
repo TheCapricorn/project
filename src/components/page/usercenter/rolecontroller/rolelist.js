@@ -19,6 +19,7 @@ class RoleList extends Component {
       urid:'',
       addAuthVisible: false,
       addAuthData:'',
+      TabPaneData:[],
       tableData: [],
       selectedRows: [],
       tableLoading: false,
@@ -127,9 +128,7 @@ class RoleList extends Component {
   componentDidMount() {
     this.loadTable();
   }
-  componentWillReceiveProps(nextProps) {
-    // console.log(nextProps);
-  }
+  componentWillReceiveProps(nextProps) {}
 
   loadTable = (data) => {
     this.setState({
@@ -203,7 +202,6 @@ class RoleList extends Component {
   };
   searchReset = () => {
     this.roleSearchForm.props.form.resetFields();
-    // console.log(this.state.tablePage);
     this.loadTable();
   };
   tableChange = (pagination, filters, sorter) => {
@@ -311,22 +309,49 @@ class RoleList extends Component {
       }
     })
   };
+  // 添加权限开启
   addAuthShow=(id)=>{
     // console.log(id);
     this.setState({
       addAuthVisible:true,
       addAuthData:id,
     });
+    post({
+      url:'/uua/app/center/list',
+    }).then(res=>{
+      // console.log(res);
+      if(!res){
+        return false;
+      }
+      this.setState({
+        TabPaneData:res.data,
+      });
+    });
   };
+  // 添加权限关闭
   addAuthCancel=()=>{
     this.setState({
       addAuthVisible:false,
     });
   };
+  AuthTabChange=(key)=>{
+
+  };
+  AuthSubmit=()=>{
+
+  };
   render() {
     return (
       <div className={'main-box'}>
-        <AddAuth addAuthData={this.state.addAuthData} addAuthVisible={this.state.addAuthVisible} addAuthCancel={this.addAuthCancel}/>
+        <AddAuth
+          wrappedComponentRef={ins=>this.addauthForm=ins}
+          TabPaneData={this.state.TabPaneData}
+          AuthTabChange={this.AuthTabChange}
+          AuthSubmit={this.AuthSubmit}
+          authBtnLoading={this.state.authBtnLoading}
+          addAuthData={this.state.addAuthData}
+          addAuthVisible={this.state.addAuthVisible}
+          addAuthCancel={this.addAuthCancel}/>
         {
           this.state.modify?
             <Addbtn
@@ -345,7 +370,7 @@ class RoleList extends Component {
               addCancel={this.addCancel}/>
         }
 
-        <Button onClick={this.addAuth}>选线</Button>
+        <Button onClick={this.addAuthShow}>选线</Button>
         <div className='bread-group'>
           <Bread bread={['用户中心', '角色管理', '角色列表']}/>
         </div>
@@ -395,7 +420,7 @@ class RoleList extends Component {
               dataSource={this.state.tableData}
               pagination={this.state.tablePage}
               rowSelection={this.rowSelection}
-              loading={this.state.loading}
+              loading={this.state.tableLoading}
               onChange={this.tableChange}
             />
           </div>

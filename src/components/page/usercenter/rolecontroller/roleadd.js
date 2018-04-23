@@ -10,19 +10,17 @@ const {TextArea} = Input;
 class AddRole extends Component {
   constructor(props) {
     super(props);
-    this.state={
-      loading:false
-    }
+    this.state={}
   }
 
   componentDidMount() {
 
   }
   componentWillReceiveProps(nextProps) {
-    // console.log(nextProps);
+    /*// console.log(nextProps);
     this.setState({
       loading:nextProps.btnLoading
-    })
+    })*/
   }
 
   /*handleSubmit = (e) => {
@@ -81,20 +79,21 @@ class AddRole extends Component {
   };*/
 
   render() {
-    const {getFieldDecorator} = this.props.form;
+    const {form,addVisible,addCancel,title,btnLoading,addSubmit} =this.props;
+    const {getFieldDecorator} = form;
     const formItemLayout = {
       labelCol: {span: 6},
       wrapperCol: {span: 14}
     };
     return (
       <Modal
-        title={this.props.title}
+        title={title}
         footer={null}
         style={{top: '10%'}}
-        visible={this.props.addVisible}
-        onCancel={this.props.addCancel}
+        visible={addVisible}
+        onCancel={addCancel}
       >
-        <Form onSubmit={this.props.addSubmit}>
+        <Form onSubmit={addSubmit}>
           <FormItem {...formItemLayout} label="角色名">
             {getFieldDecorator('urName', {
               rules: [{
@@ -133,7 +132,7 @@ class AddRole extends Component {
 
           <FormItem>
             <div className={'add-form-btns'}>
-              <Button type="primary" htmlType="submit" loading={this.state.loading}>提交</Button>
+              <Button type="primary" htmlType="submit" loading={btnLoading}>提交</Button>
               <Button onClick={this.handleClear}>重置</Button>
             </div>
           </FormItem>
