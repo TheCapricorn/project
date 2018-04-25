@@ -3,7 +3,7 @@ import React, {Component} from 'react';
 export default class Home extends Component {
   constructor(props) {
     super(props);
-    this.props.history.push('/app/appcontroller/applist/applist')
+    this.props.history.push('/app/systemset/appcontroller/applist')
   }
 
   render() {

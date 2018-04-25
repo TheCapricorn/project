@@ -14,7 +14,6 @@ import registerServiceWorker from './registerServiceWorker';
 
 moment.locale('zh-cn');
 
-
 class Entry extends Component {
   render() {
     return (

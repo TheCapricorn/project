@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import {Switch, Route, Redirect} from 'react-router-dom'
 
+// import home from '../components/home/home'
+
 import userlist from '../components/page/usercenter/usercontroller/userlist'
 import orgmenulist from '../components/page/usercenter/orgmenucontroller/orgmenulist/orgmenulist'
 import orggroup from '../components/page/usercenter/orgmenucontroller/orggroup/orggroup'
@@ -23,6 +25,7 @@ export default class Myroute extends Component {
     return (
       <Switch>
         <Route exact path='/app' render={() => <Redirect to='/app/systemset/appcontroller/applist'/>}/>
+        {/*<Route exact path='/app' component={home}/>*/}
         <Route exact path='/app/usercenter/usercontroller/userlist' component={userlist}/>
         {/*<Route exact path='/app/usercenter/usercontroller/useradd' component={useradd}/>*/}
         <Route exact path='/app/usercenter/rolecontroller/rolelist' component={rolelist}/>

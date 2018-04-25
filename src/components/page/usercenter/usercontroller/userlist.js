@@ -8,12 +8,14 @@ import AllForm from './allform'
 import UserAdd from './useradd'
 import LinkRole from './linkrole'
 import Bread from '@/components/common/bread'
+import Addbtn from './useradd'
 
 
 class ButtonList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      modify:false,
       tableData: [],
       selectedRows: [],
       loading: false,
@@ -249,6 +251,23 @@ class ButtonList extends Component {
   render() {
     return (
       <div className={'main-box'}>
+        {
+          this.state.modify?
+            <Addbtn
+              wrappedComponentRef={ins=>this.addForm=ins}
+              title='修改'
+              btnLoading={this.state.btnLoading}
+              addVisible={this.state.addVisible}
+              addSubmit={this.addSubmit}
+              addCancel={this.addCancel}/>:
+            <Addbtn
+              wrappedComponentRef={ins=>this.addForm=ins}
+              title='新建'
+              btnLoading={this.state.btnLoading}
+              addVisible={this.state.addVisible}
+              addSubmit={this.addSubmit}
+              addCancel={this.addCancel}/>
+        }
         <div className='bread-group'>
           <Bread bread={['用户中心', '用户管理', '用户列表']}/>
         </div>

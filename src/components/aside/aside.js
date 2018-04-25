@@ -4,6 +4,7 @@ import {withRouter/*,Link*/} from 'react-router-dom';
 import SiderMenu from './renderMenu';
 import menus from './menuList'
 import './aside.less'
+import logo from '@/logo.svg'
 
 const {Sider} = Layout;
 // const SubMenu=Menu.SubMenu;
@@ -19,6 +20,7 @@ class SiderCustom extends Component {
       key1 = pathname.substr(0, pathname.lastIndexOf('/'));
       key2 = key1.substr(0, key1.lastIndexOf('/'));
     }
+    // console.log(props.location);
     super(props);
     this.state = {
       collapsed: false,
@@ -35,9 +37,10 @@ class SiderCustom extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    // console.log(nextProps);
+    // console.log(nextProps.location);
     // this.onCollapse(false);
-    this.setMenuOpen(nextProps)
+    this.setMenuOpen(nextProps);
+
   }
 
   setMenuOpen = (props) => {
@@ -52,6 +55,8 @@ class SiderCustom extends Component {
     this.setState({
       openKey: [key1, key2],
       selectedKey: pathname,
+    },()=>{
+      // console.log(this.state.openKey);
     })
   };
   /*onCollapse = (collapsed) => {
@@ -98,6 +103,8 @@ class SiderCustom extends Component {
           </a>
         </div>
         <div className="logo">
+          <img src={logo} alt="基础系统"/>
+          <h1>基础系统</h1>
 
         </div>
         {/*<Menu
