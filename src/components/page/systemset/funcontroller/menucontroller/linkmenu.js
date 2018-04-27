@@ -3,6 +3,7 @@ import { Modal, Button, Form, Input, message, Icon, Col, Row} from 'antd';
 import {post} from "@/ajax/ajax";
 import api from "@/ajax/api";
 
+
 const FormItem = Form.Item;
 let uuid = 0;
 
@@ -54,7 +55,6 @@ class LinkMenu extends Component {
           url:api.buttoncontroller.delete,
           data:{uuaButtons:arr}
         }).then(res => {
-           console.log(res);
           if (res.code === 200) {
             this.loadTable();
             // 删除input框
@@ -91,8 +91,13 @@ class LinkMenu extends Component {
     e.preventDefault();
     let url='';
     this.props.form.validateFields((err,values)=>{
-      url=api.buttoncontroller.list;
-      values.umid=this.state.formData.umid;
+      if(this.state.btnType) {
+        url=api.buttoncontroller.add;
+        values.umid=this.state.formData.umid;
+      }else{
+        url=api.buttoncontroller.list;
+      }
+
 
       let Arrdata = this.state.formData;
       let arrData = Array.from(Arrdata);
@@ -180,7 +185,7 @@ class LinkMenu extends Component {
       };
       getFieldDecorator('keys', { initialValue: [] });
       const keys = getFieldValue('keys');
-      const formItems = keys.map((k,i) => {
+      const formItems = keys.map((k,i,arr) => {
         return (
           <div key={i}>
             <Row>
@@ -215,7 +220,7 @@ class LinkMenu extends Component {
               <Col span="2">
                 <div className="delBtn">
                   <Button type="ghost" shape="circle" icon="minus"
-                          onClick={() => this.remove(k)}/>
+                          onClick={() => this.remove(k,arr)}/>
                 </div>
               </Col>
 
@@ -241,10 +246,10 @@ class LinkMenu extends Component {
                confirmLoading={confirmLoading}
                onCancel={this.handleCancel}
         >
-          <Form onSubmit={this.handleSubmit}>
+          <Form>
             {formItems}
             <FormItem {...formItemLayoutWithOutLabel}>
-              <Button type="solid" onClick={this.add} style={{ width: '100px' }}>
+              <Button type="solid" onClick={this.add} style={{ width: '200px' }}>
                 <Icon type="plus" /> 添加
               </Button>
             </FormItem>

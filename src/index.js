@@ -1,7 +1,7 @@
 import './index.less';
 import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
-import {Router, Switch, Route, Redirect} from 'react-router-dom'
+import { Router, Switch, Route, Redirect} from 'react-router-dom'
 import {LocaleProvider} from 'antd'
 import zhCN from 'antd/lib/locale-provider/zh_CN';
 import moment from 'moment';

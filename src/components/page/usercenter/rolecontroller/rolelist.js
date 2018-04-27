@@ -238,7 +238,12 @@ class RoleList extends Component {
       }).then(res=>{
         if(res&&res.code===200){
           let data=res.data.list[0];
-          this.addForm.props.form.setFieldsValue({...data})
+          this.addForm.props.form.setFieldsValue({
+            urName:data.urName,
+            urCode:data.urCode,
+            remarks:data.remarks,
+            state:data.state,
+          })
         }
       });
       this.setState({

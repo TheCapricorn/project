@@ -37,7 +37,7 @@ export const get=(url,data,config)=>{
 
 const instance = axios.create({
   baseURL: '/api',
-  timeout: 10000,
+  timeout: 5000,
   // headers: {'X-Custom-Header': 'foobar'}
 });
 

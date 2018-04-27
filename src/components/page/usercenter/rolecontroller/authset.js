@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {Button, Form, /*Table,*/ Modal, Icon, Select, Input,Tabs,Tree} from 'antd'
+import {Button, Form, /*Table,*/ Modal, /*Icon,*/ Select, Input,Tabs,Tree} from 'antd'
 import {post} from '@/ajax/ajax'
 // import api from '@/ajax/api'
 
@@ -146,7 +146,7 @@ class AuthSet extends Component {
     });
   };
   render() {
-    const {addAuthVisible,form,addAuthCancel,authBtnLoading,TabPaneData,AuthTabChange,AuthSubmit,}=this.props;
+    const {addAuthVisible,form,addAuthCancel,authBtnLoading,TabPaneData,AuthSubmit,}=this.props;
     const {getFieldDecorator} = form;
     return (
       <Modal
