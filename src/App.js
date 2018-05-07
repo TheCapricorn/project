@@ -16,6 +16,7 @@ class App extends Component {
           <Header className='header-box'>
             <Head/>
           </Header>
+            +
           <Content className='content-box'>
             <Myrouter/>
           </Content>

@@ -21,31 +21,29 @@ import newmodular from '../components/page/systemset/modcontroller/newmodular/ne
 import modularlist from '../components/page/systemset/modcontroller/modularlist/modularlist'  //wj
 
 export default class Myroute extends Component {
-  render() {
-    return (
-      <Switch>
-        <Route exact path='/app' render={() => <Redirect to='/app/systemset/appcontroller/applist'/>}/>
-        {/*<Route exact path='/app' component={home}/>*/}
-        <Route exact path='/app/usercenter/usercontroller/userlist' component={userlist}/>
-        {/*<Route exact path='/app/usercenter/usercontroller/useradd' component={useradd}/>*/}
-        <Route exact path='/app/usercenter/rolecontroller/rolelist' component={rolelist}/>
-        <Route exact path='/app/usercenter/orgmenucontroller/orgmenulist' component={orgmenulist}/>
-        <Route exact path='/app/usercenter/orgmenucontroller/orggroup' component={orggroup}/>
-        <Route exact path='/app/usercenter/authcontroller/authlist' component={authlist}/>
+    render() {
+        return (
+            <Switch>
+                <Route exact path='/app' render={() => <Redirect to='/app/systemset/appcontroller/applist'/>}/>
+                {/*<Route exact path='/app' component={home}/>*/}
+                <Route exact path='/app/usercenter/usercontroller/userlist' component={userlist}/>
+                {/*<Route exact path='/app/usercenter/usercontroller/useradd' component={useradd}/>*/}
+                <Route exact path='/app/usercenter/rolecontroller/rolelist' component={rolelist}/>
+                <Route exact path='/app/usercenter/orgmenucontroller/orgmenulist' component={orgmenulist}/>
+                <Route exact path='/app/usercenter/orgmenucontroller/orggroup' component={orggroup}/>
+                <Route exact path='/app/usercenter/authcontroller/authlist' component={authlist}/>
 
-        <Route exact path='/app/usercenter/authcontroller/authset' component={authSet}/>
+                <Route exact path='/app/usercenter/authcontroller/authset' component={authSet}/>
 
-        <Route exact path='/app/systemset/funcontroller/menulist' component={menulist}/>
-        <Route exact path='/app/systemset/funcontroller/buttonlist' component={buttonlist}/>
+                <Route exact path='/app/systemset/funcontroller/menulist' component={menulist}/>
+                <Route exact path='/app/systemset/funcontroller/buttonlist' component={buttonlist}/>
 
-        <Route exact path='/app/systemset/appcontroller/newapp' component={newapp}/>
-        <Route exact path='/app/systemset/appcontroller/applist' component={applist}/>
+                <Route exact path='/app/systemset/appcontroller/applist' component={applist}/>
+                <Route exact path='/app/systemset/modcontroller/newmodular' component={newmodular}/>
+                <Route exact path='/app/systemset/modcontroller/modularlist' component={modularlist}/>
 
-        <Route exact path='/app/systemset/modcontroller/newmodular' component={newmodular}/>
-        <Route exact path='/app/systemset/modcontroller/modularlist' component={modularlist}/>
-
-        <Route render={() => <Redirect to="/404"/>}/>
-      </Switch>
-    )
-  }
+                <Route render={() => <Redirect to="/404"/>}/>
+            </Switch>
+        )
+    }
 }

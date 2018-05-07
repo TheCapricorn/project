@@ -11,103 +11,117 @@ const {Sider} = Layout;
 // const MenuItemGroup=Menu.ItemGroup;
 
 class SiderCustom extends Component {
-  constructor(props) {
-    const {pathname} = props.location;
-    let pathArr = pathname.split('/');
-    pathArr.splice(0, 1);
-    let key1, key2;
-    if (pathArr.length > 3) {
-      key1 = pathname.substr(0, pathname.lastIndexOf('/'));
-      key2 = key1.substr(0, key1.lastIndexOf('/'));
+    constructor(props) {
+        const {pathname} = props.location;
+        let pathArr = pathname.split('/');
+        pathArr.splice(0, 1);
+        let key1, key2;
+        if (pathArr.length > 3) {
+            key1 = pathname.substr(0, pathname.lastIndexOf('/'));
+            key2 = key1.substr(0, key1.lastIndexOf('/'));
+        }
+        // console.log(props.location);
+        super(props);
+        this.state = {
+            collapsed: false,
+            // mode: 'vertical',
+            openKey: [key1, key2],
+            selectedKey: pathname,
+            firstHide: false,
+        };
     }
-    // console.log(props.location);
-    super(props);
-    this.state = {
-      collapsed: false,
-      // mode: 'vertical',
-      openKey: [key1, key2],
-      selectedKey: pathname,
-      firstHide: false,
+
+    componentDidMount() {
+        this.setMenuOpen(this.props);
+
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // console.log(nextProps.location);
+        // this.onCollapse(false);
+        this.setMenuOpen(nextProps);
+
+    }
+
+    setMenuOpen = (props) => {
+        const {pathname} = props.location;
+        let pathArr = pathname.split('/');
+        pathArr.splice(0, 1);
+        let key1, key2;
+        if (pathArr.length > 3) {
+            key1 = pathname.substr(0, pathname.lastIndexOf('/'));
+            key2 = key1.substr(0, key1.lastIndexOf('/'));
+            console.log(pathname);
+        }
+        this.setState({
+            openKey: [key1, key2],
+            selectedKey: pathname,
+        }, () => {
+            console.log(this.state.openKey);
+        })
     };
-  }
+    /*onCollapse = (collapsed) => {
+      // console.log(collapsed);
+      this.setState({
+        collapsed,
+        firstHide: collapsed,
+        mode: collapsed ? 'vertical' : 'inline',
+      });
+    };*/
+    menuClick = e => {
+        //console.log(e);
+        this.setState({
+            selectedKey: e.key
+        });
+        /*console.log(this.props);
+        const { popoverHide } = this.props;     // 响应式布局控制小屏幕点击菜单时隐藏菜单操作
+        popoverHide && popoverHide();*/
+    };
+    /*openMenu = v => {
+      // console.log(v);
+      this.setState({
+        openKey: v[v.length - 1],
+        firstHide: false,
+      })
+    };*/
+    toggleCollapsed = () => {
+        this.setState({
+            collapsed: !this.state.collapsed,
+            firstHide: !this.state.firstHide
+        })
+    };
+    openMenu = (openKeys) => {
+        console.log(openKeys);
+        this.setState({
+            openKey: openKeys,
+        });
 
-  componentDidMount() {
-    this.setMenuOpen(this.props);
-    // console.log(1)
-  }
+    };
 
-  componentWillReceiveProps(nextProps) {
-    // console.log(nextProps.location);
-    // this.onCollapse(false);
-    this.setMenuOpen(nextProps);
+    ;
+    findMenuFirstKey = (list, data, index) => {
+        list.shift();
+    };
 
-  }
+    render() {
+        return (
+            <Sider
+                collapsible
+                className={'aside-box'}
+                trigger={null}
+                collapsed={this.state.collapsed}
+            >
+                <div className='aside-btn'>
+                    <a onClick={this.toggleCollapsed} style={{marginBottom: 16}}>
+                        <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}/>
+                    </a>
+                </div>
+                <div className="logo">
+                    <img src={logo} alt="基础系统"/>
+                    <h1>基础系统</h1>
 
-  setMenuOpen = (props) => {
-    const {pathname} = props.location;
-    let pathArr = pathname.split('/');
-    pathArr.splice(0, 1);
-    let key1, key2;
-    if (pathArr.length > 3) {
-      key1 = pathname.substr(0, pathname.lastIndexOf('/'));
-      key2 = key1.substr(0, key1.lastIndexOf('/'));
-    }
-    this.setState({
-      openKey: [key1, key2],
-      selectedKey: pathname,
-    },()=>{
-      // console.log(this.state.openKey);
-    })
-  };
-  /*onCollapse = (collapsed) => {
-    // console.log(collapsed);
-    this.setState({
-      collapsed,
-      firstHide: collapsed,
-      mode: collapsed ? 'vertical' : 'inline',
-    });
-  };*/
-  menuClick = e => {
-    // console.log(e);
-    this.setState({
-      selectedKey: e.key
-    });
-    /*console.log(this.props);
-    const { popoverHide } = this.props;     // 响应式布局控制小屏幕点击菜单时隐藏菜单操作
-    popoverHide && popoverHide();*/
-  };
-  /*openMenu = v => {
-    // console.log(v);
-    this.setState({
-      openKey: v[v.length - 1],
-      firstHide: false,
-    })
-  };*/
-  toggleCollapsed = () => {
-    this.setState({
-      collapsed: !this.state.collapsed,
-      firstHide: !this.state.firstHide
-    })
-  };
-  render() {
-    return (
-      <Sider
-        collapsible
-        className={'aside-box'}
-        trigger={null}
-        collapsed={this.state.collapsed}
-      >
-        <div className='aside-btn'>
-          <a onClick={this.toggleCollapsed} style={{marginBottom: 16}}>
-            <Icon type={this.state.collapsed ? 'menu-unfold' : 'menu-fold'}/>
-          </a>
-        </div>
-        <div className="logo">
-          <img src={logo} alt="基础系统"/>
-          <h1>基础系统</h1>
-
-        </div>
-        {/*<Menu
+                </div>
+                {/*<Menu
           className={'menu-box'}
           theme='dark'
           mode='inline'
@@ -174,20 +188,20 @@ class SiderCustom extends Component {
             </Menu.Item>
           </SubMenu>
         </Menu>*/}
-        <SiderMenu
-          menus={menus}
-          onSelect={this.menuClick}
-          theme='dark'
-          mode='inline'
-          inlineCollapsed={this.state.collapsed}
-          selectedKeys={[this.state.selectedKey]}
-          defaultOpenKeys={this.state.openKey}
-          // openKeys={this.state.firstHide ? null : this.state.openKey}
-          // onOpenChange={this.openMenu}
-        />
-      </Sider>
-    )
-  }
+                <SiderMenu
+                    menus={menus}
+                    onSelect={this.menuClick}
+                    theme='dark'
+                    mode='inline'
+                    inlineCollapsed={this.state.collapsed}
+                    selectedKeys={[this.state.selectedKey]}
+                    defaultOpenKeys={this.state.openKey}
+                    openKeys={this.state.firstHide ? null : this.state.openKey}
+                    onOpenChange={this.openMenu}
+                />
+            </Sider>
+        )
+    }
 }
 
 export default withRouter(SiderCustom);

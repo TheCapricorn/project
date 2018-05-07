@@ -54,8 +54,7 @@ const menusList = [
       {
         link: 'appcontroller', title: '应用管理', icon: 'layout',
         sub: [
-          {link: 'applist', title: '应用列表', icon: '',},
-          {link: 'newapp', title: '新建应用', icon: '',},
+          {link: 'applist', title: '应用列表', icon: '',}
         ],
       },
     ]
